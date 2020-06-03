@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Management;
@@ -18,6 +19,7 @@ namespace TaskManager
         public TaskManager()
         {
             InitializeComponent();
+            PopProcessList();
 
         }
 
@@ -217,6 +219,23 @@ namespace TaskManager
             MainChart.Legends["Legend1"].Enabled = false;
         }
 
+        public void PopProcessList()
+        {
+            ProcessList.Items.Clear();
+
+            Process[] ProcessListArray = Process.GetProcesses();
+            foreach (Process Pro in ProcessListArray)
+            {
+                try
+                {
+                    ProcessList.Items.Add(Pro.MainWindowTitle + " | " + Pro.ProcessName + " | " + Pro.Id + " | " + Pro.Responding + " | " + Pro.UserProcessorTime + " | " + Pro.PrivateMemorySize64);
+                }
+                catch
+                {
+                }
+            }
+        }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             Task.Factory.StartNew(() => Win32_Processor());
@@ -226,22 +245,23 @@ namespace TaskManager
             PopMainList();
             PopBars();
             PopChart();
+
         }
 
 
         private void timer2_Tick(object sender, EventArgs e)
         {
 
-            using (Graphics gr = CpuBar.CreateGraphics())
+            using (Graphics Draw = CpuBar.CreateGraphics())
             {
                 string CPU = "CPU " + Globals.CPU[Globals.CPU.Length - 1].ToString() + "%";
-                gr.DrawString(CPU, new Font(FontFamily.GenericSansSerif, 12.0F, FontStyle.Regular, GraphicsUnit.Pixel, 128), Brushes.Black, (CpuBar.Width / 2 - CPU.Length * 2), (CpuBar.Height / 2 - 7));
+                Draw.DrawString(CPU, new Font(FontFamily.GenericSansSerif, 12.0F, FontStyle.Regular, GraphicsUnit.Pixel, 128), Brushes.Black, (CpuBar.Width / 2 - CPU.Length * 2), (CpuBar.Height / 2 - 7));
             }
 
-            using (Graphics gr = RamBar.CreateGraphics())
+            using (Graphics Draw = RamBar.CreateGraphics())
             {
                 string RAM = "RAM " + Globals.RAM[Globals.RAM.Length - 1].ToString() + "% " + Globals.FreePhysicalMemory + " / " + Globals.TotalVisibleMemorySize;
-                gr.DrawString(RAM, new Font(FontFamily.GenericSansSerif, 12.0F, FontStyle.Regular, GraphicsUnit.Pixel, 128), Brushes.Black, (CpuBar.Width / 2 - RAM.Length * 2), (CpuBar.Height / 2 - 7));
+                Draw.DrawString(RAM, new Font(FontFamily.GenericSansSerif, 12.0F, FontStyle.Regular, GraphicsUnit.Pixel, 128), Brushes.Black, (CpuBar.Width / 2 - RAM.Length * 2), (CpuBar.Height / 2 - 7));
             }
   
         }
