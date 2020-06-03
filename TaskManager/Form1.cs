@@ -231,14 +231,20 @@ namespace TaskManager
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            string CPU = "CPU " + Globals.CPU[Globals.CPU.Length - 1].ToString() + "%";
-            CpuBar.CreateGraphics().DrawString(CPU, new Font(FontFamily.GenericSansSerif, 12.0F, FontStyle.Regular, GraphicsUnit.Pixel, 128), Brushes.Black, (CpuBar.Width / 2 - CPU.Length * 2), (CpuBar.Height / 2 - 7));
 
-            string RAM = "RAM " + Globals.RAM[Globals.RAM.Length - 1].ToString() + "% " + Globals.FreePhysicalMemory + " / " + Globals.TotalVisibleMemorySize;
-            RamBar.CreateGraphics().DrawString(RAM, new Font(FontFamily.GenericSansSerif, 12.0F, FontStyle.Regular, GraphicsUnit.Pixel, 128), Brushes.Black, (CpuBar.Width / 2 - RAM.Length * 2), (CpuBar.Height / 2 - 7));
- 
+            using (Graphics gr = CpuBar.CreateGraphics())
+            {
+                string CPU = "CPU " + Globals.CPU[Globals.CPU.Length - 1].ToString() + "%";
+                gr.DrawString(CPU, new Font(FontFamily.GenericSansSerif, 12.0F, FontStyle.Regular, GraphicsUnit.Pixel, 128), Brushes.Black, (CpuBar.Width / 2 - CPU.Length * 2), (CpuBar.Height / 2 - 7));
+            }
+
+            using (Graphics gr = RamBar.CreateGraphics())
+            {
+                string RAM = "RAM " + Globals.RAM[Globals.RAM.Length - 1].ToString() + "% " + Globals.FreePhysicalMemory + " / " + Globals.TotalVisibleMemorySize;
+                gr.DrawString(RAM, new Font(FontFamily.GenericSansSerif, 12.0F, FontStyle.Regular, GraphicsUnit.Pixel, 128), Brushes.Black, (CpuBar.Width / 2 - RAM.Length * 2), (CpuBar.Height / 2 - 7));
+            }
+  
         }
-
     }
 }
 
