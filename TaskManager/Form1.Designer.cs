@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.PullDataTimer = new System.Windows.Forms.Timer(this.components);
             this.MainList = new System.Windows.Forms.ListBox();
             this.MainChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -43,11 +43,13 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.PerformancePage = new System.Windows.Forms.TabPage();
             this.ProcessesPage = new System.Windows.Forms.TabPage();
-            this.ProcessList = new System.Windows.Forms.ListBox();
+            this.ProcessGridView = new System.Windows.Forms.DataGridView();
+            this.ProcessTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.MainChart)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.PerformancePage.SuspendLayout();
             this.ProcessesPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ProcessGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // PullDataTimer
@@ -66,16 +68,16 @@
             // 
             // MainChart
             // 
-            chartArea1.Name = "ChartArea1";
-            this.MainChart.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.MainChart.Legends.Add(legend1);
+            chartArea5.Name = "ChartArea1";
+            this.MainChart.ChartAreas.Add(chartArea5);
+            legend5.Name = "Legend1";
+            this.MainChart.Legends.Add(legend5);
             this.MainChart.Location = new System.Drawing.Point(6, 0);
             this.MainChart.Name = "MainChart";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.MainChart.Series.Add(series1);
+            series5.ChartArea = "ChartArea1";
+            series5.Legend = "Legend1";
+            series5.Name = "Series1";
+            this.MainChart.Series.Add(series5);
             this.MainChart.Size = new System.Drawing.Size(587, 319);
             this.MainChart.TabIndex = 2;
             this.MainChart.Text = "chart1";
@@ -148,7 +150,7 @@
             // 
             // ProcessesPage
             // 
-            this.ProcessesPage.Controls.Add(this.ProcessList);
+            this.ProcessesPage.Controls.Add(this.ProcessGridView);
             this.ProcessesPage.Location = new System.Drawing.Point(4, 22);
             this.ProcessesPage.Name = "ProcessesPage";
             this.ProcessesPage.Padding = new System.Windows.Forms.Padding(3);
@@ -157,13 +159,18 @@
             this.ProcessesPage.Text = "Processes";
             this.ProcessesPage.UseVisualStyleBackColor = true;
             // 
-            // ProcessList
+            // ProcessGridView
             // 
-            this.ProcessList.FormattingEnabled = true;
-            this.ProcessList.Location = new System.Drawing.Point(6, 6);
-            this.ProcessList.Name = "ProcessList";
-            this.ProcessList.Size = new System.Drawing.Size(912, 316);
-            this.ProcessList.TabIndex = 0;
+            this.ProcessGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ProcessGridView.Location = new System.Drawing.Point(3, 6);
+            this.ProcessGridView.Name = "ProcessGridView";
+            this.ProcessGridView.Size = new System.Drawing.Size(915, 313);
+            this.ProcessGridView.TabIndex = 0;
+            // 
+            // ProcessTimer
+            // 
+            this.ProcessTimer.Interval = 1000;
+            this.ProcessTimer.Tick += new System.EventHandler(this.ProcessTimer_Tick);
             // 
             // TaskManager
             // 
@@ -180,6 +187,7 @@
             this.PerformancePage.ResumeLayout(false);
             this.PerformancePage.PerformLayout();
             this.ProcessesPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ProcessGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -196,7 +204,8 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage PerformancePage;
         private System.Windows.Forms.TabPage ProcessesPage;
-        private System.Windows.Forms.ListBox ProcessList;
+        private System.Windows.Forms.DataGridView ProcessGridView;
+        private System.Windows.Forms.Timer ProcessTimer;
     }
 }
 

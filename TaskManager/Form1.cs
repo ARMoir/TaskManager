@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Management;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,8 +20,10 @@ namespace TaskManager
         public TaskManager()
         {
             InitializeComponent();
-            PopProcessList();
 
+            CreateProcessList();
+
+            RefreshProcessList();
         }
 
         public static class Globals
@@ -40,6 +43,9 @@ namespace TaskManager
             public static int FreeVirtualMemory = 0;
 
             public static int NumberOfProcessors = 0;
+
+            public static DataTable ProTable = new DataTable();
+
 
             public static int[] CPU = { 
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -219,21 +225,71 @@ namespace TaskManager
             MainChart.Legends["Legend1"].Enabled = false;
         }
 
-        public void PopProcessList()
+        public void CreateProcessList()
         {
-            ProcessList.Items.Clear();
+
+            Globals.ProTable.Columns.Add("id");
+            Globals.ProTable.Columns.Add("ProcessName");
+            Globals.ProTable.Columns.Add("MainWindowTitle");
+            Globals.ProTable.Columns.Add("Responding");
+            Globals.ProTable.Columns.Add("UserProcessorTime");
+            Globals.ProTable.Columns.Add("PrivateMemorySize64");
 
             Process[] ProcessListArray = Process.GetProcesses();
             foreach (Process Pro in ProcessListArray)
             {
                 try
                 {
-                    ProcessList.Items.Add(Pro.MainWindowTitle + " | " + Pro.ProcessName + " | " + Pro.Id + " | " + Pro.Responding + " | " + Pro.UserProcessorTime + " | " + Pro.PrivateMemorySize64);
+
+                        Globals.ProTable.Rows.Add(Pro.Id, Pro.ProcessName, Pro.MainWindowTitle,
+                        Pro.Responding, Pro.UserProcessorTime, Pro.PrivateMemorySize64);
+
                 }
-                catch
+                catch (Exception ex)
                 {
+                    //MessageBox.Show(ex.Message.ToString());
                 }
             }
+
+                ProcessGridView.DataSource = Globals.ProTable;
+        }
+
+        public void RefreshProcessList()
+        {
+
+            Process[] ProcessListArray = Process.GetProcesses();
+            foreach (Process Pro in ProcessListArray)
+            {
+                try
+                {
+
+                    foreach (DataRow row in Globals.ProTable.Rows)
+                    {
+                        if (row["id"].ToString() == Pro.Id.ToString())
+                            row.SetField("ProcessName", Pro.ProcessName);
+
+                        if (row["id"].ToString() == Pro.Id.ToString())
+                            row.SetField("MainWindowTitle", Pro.MainWindowTitle);
+
+                        if (row["id"].ToString() == Pro.Id.ToString())
+                            row.SetField("Responding", Pro.Responding);
+
+                        if (row["id"].ToString() == Pro.Id.ToString())
+                            row.SetField("UserProcessorTime", Pro.UserProcessorTime);
+
+                        if (row["id"].ToString() == Pro.Id.ToString())
+                            row.SetField("PrivateMemorySize64", Pro.PrivateMemorySize64);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    //MessageBox.Show(ex.Message.ToString());
+                }
+                
+            }
+
+            ProcessGridView.Update();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -246,6 +302,7 @@ namespace TaskManager
             PopBars();
             PopChart();
 
+            RefreshProcessList();
         }
 
 
@@ -264,6 +321,11 @@ namespace TaskManager
                 Draw.DrawString(RAM, new Font(FontFamily.GenericSansSerif, 12.0F, FontStyle.Regular, GraphicsUnit.Pixel, 128), Brushes.Black, (CpuBar.Width / 2 - RAM.Length * 2), (CpuBar.Height / 2 - 7));
             }
   
+        }
+
+        private void ProcessTimer_Tick(object sender, EventArgs e)
+        {
+            RefreshProcessList();
         }
     }
 }
