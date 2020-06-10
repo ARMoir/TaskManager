@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Management;
 using System.Reflection;
@@ -22,8 +23,8 @@ namespace TaskManager
             InitializeComponent();
 
             CreateProcessList();
-
             RefreshProcessList();
+            UpdateProcessList();
         }
 
         public static class Globals
@@ -45,7 +46,8 @@ namespace TaskManager
             public static int NumberOfProcessors = 0;
 
             public static DataTable ProTable = new DataTable();
-
+            public static Bitmap Icon;
+            public static int ProID = 0;
 
             public static int[] CPU = { 
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -227,13 +229,20 @@ namespace TaskManager
 
         public void CreateProcessList()
         {
-
+            Globals.ProTable.Clear();
+            Globals.ProTable.Columns.Add("Icon", typeof(Bitmap));
             Globals.ProTable.Columns.Add("id");
             Globals.ProTable.Columns.Add("ProcessName");
             Globals.ProTable.Columns.Add("MainWindowTitle");
             Globals.ProTable.Columns.Add("Responding");
             Globals.ProTable.Columns.Add("UserProcessorTime");
             Globals.ProTable.Columns.Add("PrivateMemorySize64");
+            ProcessGridView.DataSource = Globals.ProTable;
+        }
+
+        public void RefreshProcessList()
+        {
+            Globals.ProTable.Clear();
 
             Process[] ProcessListArray = Process.GetProcesses();
             foreach (Process Pro in ProcessListArray)
@@ -241,8 +250,11 @@ namespace TaskManager
                 try
                 {
 
-                        Globals.ProTable.Rows.Add(Pro.Id, Pro.ProcessName, Pro.MainWindowTitle,
-                        Pro.Responding, Pro.UserProcessorTime, Pro.PrivateMemorySize64);
+                    Globals.ProID = (Int32.Parse(Pro.Id.ToString()));
+                    GetIcon();
+
+                    Globals.ProTable.Rows.Add(Globals.Icon, Pro.Id, Pro.ProcessName, Pro.MainWindowTitle,
+                    Pro.Responding, Pro.UserProcessorTime, Pro.PrivateMemorySize64);
 
                 }
                 catch (Exception ex)
@@ -251,10 +263,23 @@ namespace TaskManager
                 }
             }
 
-                ProcessGridView.DataSource = Globals.ProTable;
         }
 
-        public void RefreshProcessList()
+        public void GetIcon()
+        {
+            try
+            {
+                Process proc = Process.GetProcessById(Globals.ProID);
+                string fullPath = proc.MainModule.FileName;
+                Globals.Icon = (System.Drawing.Icon.ExtractAssociatedIcon(fullPath)).ToBitmap();
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.Message.ToString());
+            }
+        }
+
+        public void UpdateProcessList()
         {
 
             Process[] ProcessListArray = Process.GetProcesses();
@@ -262,7 +287,7 @@ namespace TaskManager
             {
                 try
                 {
-
+                   
                     foreach (DataRow row in Globals.ProTable.Rows)
                     {
                         if (row["id"].ToString() == Pro.Id.ToString())
@@ -302,7 +327,8 @@ namespace TaskManager
             PopBars();
             PopChart();
 
-            RefreshProcessList();
+            UpdateProcessList();
+           //ProcessGridView.Update();
         }
 
 
@@ -323,9 +349,37 @@ namespace TaskManager
   
         }
 
-        private void ProcessTimer_Tick(object sender, EventArgs e)
+        private void killToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RefreshProcessList();
+            
+            try
+            {
+                Process proc = Process.GetProcessById(Int32.Parse(ProcessGridView.CurrentRow.Cells[1].Value.ToString()));
+                proc.Kill();
+                RefreshProcessList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
+        }
+
+        private void locationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process proc = Process.GetProcessById(Int32.Parse(ProcessGridView.CurrentRow.Cells[1].Value.ToString()));
+                string fullPath = proc.MainModule.FileName;
+                Process.Start("explorer.exe", "/select, " + fullPath);
+                RefreshProcessList();
+
+                Icon icon = System.Drawing.Icon.ExtractAssociatedIcon(fullPath);
+                pictureBox1.Image = icon.ToBitmap();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
         }
     }
 }

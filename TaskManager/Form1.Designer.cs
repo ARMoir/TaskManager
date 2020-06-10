@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.PullDataTimer = new System.Windows.Forms.Timer(this.components);
             this.MainList = new System.Windows.Forms.ListBox();
             this.MainChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -44,12 +44,17 @@
             this.PerformancePage = new System.Windows.Forms.TabPage();
             this.ProcessesPage = new System.Windows.Forms.TabPage();
             this.ProcessGridView = new System.Windows.Forms.DataGridView();
-            this.ProcessTimer = new System.Windows.Forms.Timer(this.components);
+            this.ProMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.killToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.locationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.MainChart)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.PerformancePage.SuspendLayout();
             this.ProcessesPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ProcessGridView)).BeginInit();
+            this.ProMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // PullDataTimer
@@ -68,16 +73,16 @@
             // 
             // MainChart
             // 
-            chartArea5.Name = "ChartArea1";
-            this.MainChart.ChartAreas.Add(chartArea5);
-            legend5.Name = "Legend1";
-            this.MainChart.Legends.Add(legend5);
+            chartArea2.Name = "ChartArea1";
+            this.MainChart.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.MainChart.Legends.Add(legend2);
             this.MainChart.Location = new System.Drawing.Point(6, 0);
             this.MainChart.Name = "MainChart";
-            series5.ChartArea = "ChartArea1";
-            series5.Legend = "Legend1";
-            series5.Name = "Series1";
-            this.MainChart.Series.Add(series5);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.MainChart.Series.Add(series2);
             this.MainChart.Size = new System.Drawing.Size(587, 319);
             this.MainChart.TabIndex = 2;
             this.MainChart.Text = "chart1";
@@ -150,6 +155,7 @@
             // 
             // ProcessesPage
             // 
+            this.ProcessesPage.Controls.Add(this.pictureBox1);
             this.ProcessesPage.Controls.Add(this.ProcessGridView);
             this.ProcessesPage.Location = new System.Drawing.Point(4, 22);
             this.ProcessesPage.Name = "ProcessesPage";
@@ -162,15 +168,41 @@
             // ProcessGridView
             // 
             this.ProcessGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ProcessGridView.ContextMenuStrip = this.ProMenuStrip;
             this.ProcessGridView.Location = new System.Drawing.Point(3, 6);
             this.ProcessGridView.Name = "ProcessGridView";
-            this.ProcessGridView.Size = new System.Drawing.Size(915, 313);
+            this.ProcessGridView.Size = new System.Drawing.Size(837, 313);
             this.ProcessGridView.TabIndex = 0;
             // 
-            // ProcessTimer
+            // ProMenuStrip
             // 
-            this.ProcessTimer.Interval = 1000;
-            this.ProcessTimer.Tick += new System.EventHandler(this.ProcessTimer_Tick);
+            this.ProMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.killToolStripMenuItem,
+            this.locationToolStripMenuItem});
+            this.ProMenuStrip.Name = "ProMenuStrip";
+            this.ProMenuStrip.Size = new System.Drawing.Size(121, 48);
+            // 
+            // killToolStripMenuItem
+            // 
+            this.killToolStripMenuItem.Name = "killToolStripMenuItem";
+            this.killToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.killToolStripMenuItem.Text = "Kill";
+            this.killToolStripMenuItem.Click += new System.EventHandler(this.killToolStripMenuItem_Click);
+            // 
+            // locationToolStripMenuItem
+            // 
+            this.locationToolStripMenuItem.Name = "locationToolStripMenuItem";
+            this.locationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.locationToolStripMenuItem.Text = "Location";
+            this.locationToolStripMenuItem.Click += new System.EventHandler(this.locationToolStripMenuItem_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(846, 19);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(72, 50);
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
             // 
             // TaskManager
             // 
@@ -188,6 +220,8 @@
             this.PerformancePage.PerformLayout();
             this.ProcessesPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ProcessGridView)).EndInit();
+            this.ProMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -205,7 +239,10 @@
         private System.Windows.Forms.TabPage PerformancePage;
         private System.Windows.Forms.TabPage ProcessesPage;
         private System.Windows.Forms.DataGridView ProcessGridView;
-        private System.Windows.Forms.Timer ProcessTimer;
+        private System.Windows.Forms.ContextMenuStrip ProMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem killToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem locationToolStripMenuItem;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 
