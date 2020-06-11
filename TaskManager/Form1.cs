@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -265,13 +266,18 @@ namespace TaskManager
 
         }
 
+        public bool ThumbnailCallback() { return false; }
+
         public void GetIcon()
         {
             try
             {
                 Process proc = Process.GetProcessById(Globals.ProID);
                 string fullPath = proc.MainModule.FileName;
-                Globals.Icon = (System.Drawing.Icon.ExtractAssociatedIcon(fullPath)).ToBitmap();
+                Bitmap Icon = (System.Drawing.Icon.ExtractAssociatedIcon(fullPath)).ToBitmap();
+                int thumbSize = 20;
+                Globals.Icon = new Bitmap(Icon.GetThumbnailImage(thumbSize, thumbSize, ThumbnailCallback, IntPtr.Zero));
+                Icon.Dispose();
             }
             catch (Exception ex)
             {
@@ -328,7 +334,6 @@ namespace TaskManager
             PopChart();
 
             UpdateProcessList();
-           //ProcessGridView.Update();
         }
 
 
@@ -372,14 +377,59 @@ namespace TaskManager
                 string fullPath = proc.MainModule.FileName;
                 Process.Start("explorer.exe", "/select, " + fullPath);
                 RefreshProcessList();
-
-                Icon icon = System.Drawing.Icon.ExtractAssociatedIcon(fullPath);
-                pictureBox1.Image = icon.ToBitmap();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message.ToString());
             }
+        }
+
+        [DllImport("shell32.dll", CharSet = CharSet.Auto)]
+        static extern bool ShellExecuteEx(ref SHELLEXECUTEINFO lpExecInfo);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        public struct SHELLEXECUTEINFO
+        {
+            public int cbSize;
+            public uint fMask;
+            public IntPtr hwnd;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpVerb;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpFile;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpParameters;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpDirectory;
+            public int nShow;
+            public IntPtr hInstApp;
+            public IntPtr lpIDList;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpClass;
+            public IntPtr hkeyClass;
+            public uint dwHotKey;
+            public IntPtr hIcon;
+            public IntPtr hProcess;
+        }
+
+        private const int SW_SHOW = 5;
+        private const uint SEE_MASK_INVOKEIDLIST = 12;
+        public static bool ShowFileProperties(string Filename)
+        {
+            SHELLEXECUTEINFO info = new SHELLEXECUTEINFO();
+            info.cbSize = System.Runtime.InteropServices.Marshal.SizeOf(info);
+            info.lpVerb = "properties";
+            info.lpFile = Filename;
+            info.nShow = SW_SHOW;
+            info.fMask = SEE_MASK_INVOKEIDLIST;
+            return ShellExecuteEx(ref info);
+        }
+
+        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process proc = Process.GetProcessById(Int32.Parse(ProcessGridView.CurrentRow.Cells[1].Value.ToString()));
+            string fullPath = proc.MainModule.FileName;
+            ShowFileProperties(fullPath);
         }
     }
 }
