@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.PullDataTimer = new System.Windows.Forms.Timer(this.components);
             this.MainList = new System.Windows.Forms.ListBox();
             this.MainChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -48,12 +48,16 @@
             this.killToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.locationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Services = new System.Windows.Forms.TabPage();
+            this.ServiceGridView = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.MainChart)).BeginInit();
             this.MainTabControl.SuspendLayout();
             this.PerformancePage.SuspendLayout();
             this.ProcessesPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ProcessGridView)).BeginInit();
             this.ProMenuStrip.SuspendLayout();
+            this.Services.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ServiceGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // PullDataTimer
@@ -72,16 +76,16 @@
             // 
             // MainChart
             // 
-            chartArea2.Name = "ChartArea1";
-            this.MainChart.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.MainChart.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            this.MainChart.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.MainChart.Legends.Add(legend1);
             this.MainChart.Location = new System.Drawing.Point(6, 0);
             this.MainChart.Name = "MainChart";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.MainChart.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.MainChart.Series.Add(series1);
             this.MainChart.Size = new System.Drawing.Size(587, 319);
             this.MainChart.TabIndex = 2;
             this.MainChart.Text = "chart1";
@@ -132,6 +136,7 @@
             // 
             this.MainTabControl.Controls.Add(this.PerformancePage);
             this.MainTabControl.Controls.Add(this.ProcessesPage);
+            this.MainTabControl.Controls.Add(this.Services);
             this.MainTabControl.Location = new System.Drawing.Point(3, 3);
             this.MainTabControl.Name = "MainTabControl";
             this.MainTabControl.SelectedIndex = 0;
@@ -209,6 +214,25 @@
             this.propertiesToolStripMenuItem.Text = "Properties";
             this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
+            // Services
+            // 
+            this.Services.Controls.Add(this.ServiceGridView);
+            this.Services.Location = new System.Drawing.Point(4, 22);
+            this.Services.Name = "Services";
+            this.Services.Padding = new System.Windows.Forms.Padding(3);
+            this.Services.Size = new System.Drawing.Size(926, 325);
+            this.Services.TabIndex = 2;
+            this.Services.Text = "Services";
+            this.Services.UseVisualStyleBackColor = true;
+            // 
+            // ServiceGridView
+            // 
+            this.ServiceGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ServiceGridView.Location = new System.Drawing.Point(5, 3);
+            this.ServiceGridView.Name = "ServiceGridView";
+            this.ServiceGridView.Size = new System.Drawing.Size(918, 319);
+            this.ServiceGridView.TabIndex = 0;
+            // 
             // TaskManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -226,6 +250,8 @@
             this.ProcessesPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ProcessGridView)).EndInit();
             this.ProMenuStrip.ResumeLayout(false);
+            this.Services.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ServiceGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -247,6 +273,8 @@
         private System.Windows.Forms.ToolStripMenuItem killToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem locationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
+        private System.Windows.Forms.TabPage Services;
+        private System.Windows.Forms.DataGridView ServiceGridView;
     }
 }
 

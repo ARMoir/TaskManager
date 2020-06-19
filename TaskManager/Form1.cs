@@ -9,6 +9,7 @@ using System.Linq;
 using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,6 +27,9 @@ namespace TaskManager
             CreateProcessList();
             RefreshProcessList();
             UpdateProcessList();
+
+            CreateServiceList();
+            RefreshServiceList();
         }
 
         public static class Globals
@@ -47,6 +51,7 @@ namespace TaskManager
             public static int NumberOfProcessors = 0;
 
             public static DataTable ProTable = new DataTable();
+            public static DataTable SerTable = new DataTable();
             public static Bitmap Icon;
             public static int ProID = 0;
 
@@ -256,6 +261,39 @@ namespace TaskManager
 
                     Globals.ProTable.Rows.Add(Globals.Icon, Pro.Id, Pro.ProcessName, Pro.MainWindowTitle,
                     Pro.Responding, Pro.UserProcessorTime, Pro.PrivateMemorySize64);
+
+                }
+                catch (Exception ex)
+                {
+                    //MessageBox.Show(ex.Message.ToString());
+                }
+            }
+
+        }
+
+        public void CreateServiceList()
+        {
+            Globals.SerTable.Clear();
+            Globals.SerTable.Columns.Add("Service Name");
+            Globals.SerTable.Columns.Add("Display Name");
+            Globals.SerTable.Columns.Add("Status");
+            Globals.SerTable.Columns.Add("Service Type");
+            Globals.SerTable.Columns.Add("Start Type");
+            ServiceGridView.DataSource = Globals.SerTable;
+        }
+
+        public void RefreshServiceList()
+        {
+            Globals.SerTable.Clear();
+
+            ServiceController[] services = ServiceController.GetServices();
+            foreach (ServiceController service in services)
+            {
+                try
+                {
+
+                    Globals.SerTable.Rows.Add(service.ServiceName, service.DisplayName, service.Status,
+                        service.ServiceType, service.StartType);
 
                 }
                 catch (Exception ex)
