@@ -293,25 +293,17 @@ namespace TaskManager
             {
                 try
                 {
-                   
                     foreach (DataRow row in Globals.ProTable.Rows)
                     {
                         if (row["id"].ToString() == Pro.Id.ToString())
+                        {
                             row.SetField("ProcessName", Pro.ProcessName);
-
-                        if (row["id"].ToString() == Pro.Id.ToString())
                             row.SetField("MainWindowTitle", Pro.MainWindowTitle);
-
-                        if (row["id"].ToString() == Pro.Id.ToString())
                             row.SetField("Responding", Pro.Responding);
-
-                        if (row["id"].ToString() == Pro.Id.ToString())
                             row.SetField("UserProcessorTime", Pro.UserProcessorTime);
-
-                        if (row["id"].ToString() == Pro.Id.ToString())
                             row.SetField("PrivateMemorySize64", Pro.PrivateMemorySize64);
+                        } 
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -325,15 +317,24 @@ namespace TaskManager
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            PopBars();
+
             Task.Factory.StartNew(() => Win32_Processor());
             Task.Factory.StartNew(() => Win32_OperatingSystem());
             Task.Factory.StartNew(() => Win32_ComputerSystem());
 
-            PopMainList();
-            PopBars();
-            PopChart();
 
-            UpdateProcessList();
+            if (MainTabControl.SelectedTab == MainTabControl.TabPages["PerformancePage"])
+            {
+                PopMainList();
+                PopChart();
+            }
+
+            if (MainTabControl.SelectedTab == MainTabControl.TabPages["ProcessesPage"])
+            {
+                UpdateProcessList();
+            }
+  
         }
 
 
@@ -365,7 +366,7 @@ namespace TaskManager
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message.ToString());
+                //MessageBox.Show(ex.Message.ToString());
             }
         }
 
@@ -384,52 +385,18 @@ namespace TaskManager
             }
         }
 
-        [DllImport("shell32.dll", CharSet = CharSet.Auto)]
-        static extern bool ShellExecuteEx(ref SHELLEXECUTEINFO lpExecInfo);
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct SHELLEXECUTEINFO
-        {
-            public int cbSize;
-            public uint fMask;
-            public IntPtr hwnd;
-            [MarshalAs(UnmanagedType.LPTStr)]
-            public string lpVerb;
-            [MarshalAs(UnmanagedType.LPTStr)]
-            public string lpFile;
-            [MarshalAs(UnmanagedType.LPTStr)]
-            public string lpParameters;
-            [MarshalAs(UnmanagedType.LPTStr)]
-            public string lpDirectory;
-            public int nShow;
-            public IntPtr hInstApp;
-            public IntPtr lpIDList;
-            [MarshalAs(UnmanagedType.LPTStr)]
-            public string lpClass;
-            public IntPtr hkeyClass;
-            public uint dwHotKey;
-            public IntPtr hIcon;
-            public IntPtr hProcess;
-        }
-
-        private const int SW_SHOW = 5;
-        private const uint SEE_MASK_INVOKEIDLIST = 12;
-        public static bool ShowFileProperties(string Filename)
-        {
-            SHELLEXECUTEINFO info = new SHELLEXECUTEINFO();
-            info.cbSize = System.Runtime.InteropServices.Marshal.SizeOf(info);
-            info.lpVerb = "properties";
-            info.lpFile = Filename;
-            info.nShow = SW_SHOW;
-            info.fMask = SEE_MASK_INVOKEIDLIST;
-            return ShellExecuteEx(ref info);
-        }
-
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process proc = Process.GetProcessById(Int32.Parse(ProcessGridView.CurrentRow.Cells[1].Value.ToString()));
-            string fullPath = proc.MainModule.FileName;
-            ShowFileProperties(fullPath);
+            try
+            {
+                Process proc = Process.GetProcessById(Int32.Parse(ProcessGridView.CurrentRow.Cells[1].Value.ToString()));
+                string fullPath = proc.MainModule.FileName;
+                Properties.ViewProperties.ShowFileProperties(fullPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
         }
     }
 }
