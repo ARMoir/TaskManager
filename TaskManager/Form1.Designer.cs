@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.PullDataTimer = new System.Windows.Forms.Timer(this.components);
             this.MainList = new System.Windows.Forms.ListBox();
             this.MainChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -50,6 +50,10 @@
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Services = new System.Windows.Forms.TabPage();
             this.ServiceGridView = new System.Windows.Forms.DataGridView();
+            this.SerMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainChart)).BeginInit();
             this.MainTabControl.SuspendLayout();
             this.PerformancePage.SuspendLayout();
@@ -58,6 +62,7 @@
             this.ProMenuStrip.SuspendLayout();
             this.Services.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ServiceGridView)).BeginInit();
+            this.SerMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // PullDataTimer
@@ -76,16 +81,16 @@
             // 
             // MainChart
             // 
-            chartArea1.Name = "ChartArea1";
-            this.MainChart.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.MainChart.Legends.Add(legend1);
+            chartArea2.Name = "ChartArea1";
+            this.MainChart.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.MainChart.Legends.Add(legend2);
             this.MainChart.Location = new System.Drawing.Point(6, 0);
             this.MainChart.Name = "MainChart";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.MainChart.Series.Add(series1);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.MainChart.Series.Add(series2);
             this.MainChart.Size = new System.Drawing.Size(587, 319);
             this.MainChart.TabIndex = 2;
             this.MainChart.Text = "chart1";
@@ -107,7 +112,7 @@
             // RefreshTimer
             // 
             this.RefreshTimer.Enabled = true;
-            this.RefreshTimer.Interval = 10;
+            this.RefreshTimer.Interval = 5;
             this.RefreshTimer.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // CPUcheck
@@ -181,6 +186,7 @@
             this.ProcessGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ProcessGridView.Location = new System.Drawing.Point(3, 3);
             this.ProcessGridView.Name = "ProcessGridView";
+            this.ProcessGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.ProcessGridView.Size = new System.Drawing.Size(920, 319);
             this.ProcessGridView.TabIndex = 0;
             // 
@@ -227,11 +233,51 @@
             // 
             // ServiceGridView
             // 
+            this.ServiceGridView.AllowUserToAddRows = false;
+            this.ServiceGridView.AllowUserToDeleteRows = false;
+            this.ServiceGridView.AllowUserToOrderColumns = true;
+            this.ServiceGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.ServiceGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.ServiceGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.ServiceGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.ServiceGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ServiceGridView.ContextMenuStrip = this.SerMenuStrip;
             this.ServiceGridView.Location = new System.Drawing.Point(5, 3);
             this.ServiceGridView.Name = "ServiceGridView";
+            this.ServiceGridView.ReadOnly = true;
+            this.ServiceGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.ServiceGridView.Size = new System.Drawing.Size(918, 319);
             this.ServiceGridView.TabIndex = 0;
+            // 
+            // SerMenuStrip
+            // 
+            this.SerMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.stopToolStripMenuItem,
+            this.startToolStripMenuItem,
+            this.refreshToolStripMenuItem});
+            this.SerMenuStrip.Name = "SerMenuStrip";
+            this.SerMenuStrip.Size = new System.Drawing.Size(181, 92);
+            // 
+            // stopToolStripMenuItem
+            // 
+            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.stopToolStripMenuItem.Text = "Stop";
+            this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
+            // 
+            // startToolStripMenuItem
+            // 
+            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.startToolStripMenuItem.Text = "Start";
+            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
+            // 
+            // refreshToolStripMenuItem
+            // 
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshToolStripMenuItem.Text = "Refresh";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // TaskManager
             // 
@@ -252,6 +298,7 @@
             this.ProMenuStrip.ResumeLayout(false);
             this.Services.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ServiceGridView)).EndInit();
+            this.SerMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -275,6 +322,10 @@
         private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
         private System.Windows.Forms.TabPage Services;
         private System.Windows.Forms.DataGridView ServiceGridView;
+        private System.Windows.Forms.ContextMenuStrip SerMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
     }
 }
 

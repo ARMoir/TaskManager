@@ -436,6 +436,39 @@ namespace TaskManager
                 MessageBox.Show(ex.Message.ToString());
             }
         }
+
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ServiceController service = new ServiceController(ServiceGridView.CurrentRow.Cells[0].Value.ToString());
+                service.Stop();
+                RefreshServiceList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
+        }
+
+        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ServiceController service = new ServiceController(ServiceGridView.CurrentRow.Cells[0].Value.ToString());
+                service.Start();
+                RefreshServiceList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
+        }
+
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RefreshServiceList();
+        }
     }
 }
 
