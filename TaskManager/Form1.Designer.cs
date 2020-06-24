@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.PullDataTimer = new System.Windows.Forms.Timer(this.components);
             this.MainList = new System.Windows.Forms.ListBox();
             this.MainChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -73,6 +73,8 @@
             // 
             // MainList
             // 
+            this.MainList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.MainList.FormattingEnabled = true;
             this.MainList.Location = new System.Drawing.Point(653, 6);
             this.MainList.Name = "MainList";
@@ -81,22 +83,26 @@
             // 
             // MainChart
             // 
-            chartArea2.Name = "ChartArea1";
-            this.MainChart.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.MainChart.Legends.Add(legend2);
+            this.MainChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            chartArea6.Name = "ChartArea1";
+            this.MainChart.ChartAreas.Add(chartArea6);
+            legend6.Name = "Legend1";
+            this.MainChart.Legends.Add(legend6);
             this.MainChart.Location = new System.Drawing.Point(6, 0);
             this.MainChart.Name = "MainChart";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.MainChart.Series.Add(series2);
+            series6.ChartArea = "ChartArea1";
+            series6.Legend = "Legend1";
+            series6.Name = "Series1";
+            this.MainChart.Series.Add(series6);
             this.MainChart.Size = new System.Drawing.Size(587, 319);
             this.MainChart.TabIndex = 2;
             this.MainChart.Text = "chart1";
             // 
             // CpuBar
             // 
+            this.CpuBar.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.CpuBar.Location = new System.Drawing.Point(12, 360);
             this.CpuBar.Name = "CpuBar";
             this.CpuBar.Size = new System.Drawing.Size(649, 23);
@@ -104,6 +110,7 @@
             // 
             // RamBar
             // 
+            this.RamBar.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.RamBar.Location = new System.Drawing.Point(13, 390);
             this.RamBar.Name = "RamBar";
             this.RamBar.Size = new System.Drawing.Size(648, 23);
@@ -117,6 +124,7 @@
             // 
             // CPUcheck
             // 
+            this.CPUcheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CPUcheck.AutoSize = true;
             this.CPUcheck.Checked = true;
             this.CPUcheck.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -129,6 +137,7 @@
             // 
             // RAMcheck
             // 
+            this.RAMcheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.RAMcheck.AutoSize = true;
             this.RAMcheck.Location = new System.Drawing.Point(599, 26);
             this.RAMcheck.Name = "RAMcheck";
@@ -139,10 +148,14 @@
             // 
             // MainTabControl
             // 
+            this.MainTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.MainTabControl.Controls.Add(this.PerformancePage);
             this.MainTabControl.Controls.Add(this.ProcessesPage);
             this.MainTabControl.Controls.Add(this.Services);
             this.MainTabControl.Location = new System.Drawing.Point(3, 3);
+            this.MainTabControl.Multiline = true;
             this.MainTabControl.Name = "MainTabControl";
             this.MainTabControl.SelectedIndex = 0;
             this.MainTabControl.Size = new System.Drawing.Size(934, 351);
@@ -177,13 +190,15 @@
             // 
             this.ProcessGridView.AllowUserToAddRows = false;
             this.ProcessGridView.AllowUserToDeleteRows = false;
+            this.ProcessGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ProcessGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.ProcessGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.ProcessGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ProcessGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.ProcessGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ProcessGridView.ContextMenuStrip = this.ProMenuStrip;
-            this.ProcessGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ProcessGridView.Location = new System.Drawing.Point(3, 3);
             this.ProcessGridView.Name = "ProcessGridView";
             this.ProcessGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -236,6 +251,9 @@
             this.ServiceGridView.AllowUserToAddRows = false;
             this.ServiceGridView.AllowUserToDeleteRows = false;
             this.ServiceGridView.AllowUserToOrderColumns = true;
+            this.ServiceGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ServiceGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.ServiceGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.ServiceGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -256,26 +274,26 @@
             this.startToolStripMenuItem,
             this.refreshToolStripMenuItem});
             this.SerMenuStrip.Name = "SerMenuStrip";
-            this.SerMenuStrip.Size = new System.Drawing.Size(181, 92);
+            this.SerMenuStrip.Size = new System.Drawing.Size(114, 70);
             // 
             // stopToolStripMenuItem
             // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
