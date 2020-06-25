@@ -23,11 +23,9 @@ namespace TaskManager
         public TaskManager()
         {
             InitializeComponent();
-
             CreateProcessList();
             RefreshProcessList();
             UpdateProcessList();
-
             CreateServiceList();
             RefreshServiceList();
         }
@@ -353,46 +351,6 @@ namespace TaskManager
             ProcessGridView.Update();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            PopBars();
-
-            Task.Factory.StartNew(() => Win32_Processor());
-            Task.Factory.StartNew(() => Win32_OperatingSystem());
-            Task.Factory.StartNew(() => Win32_ComputerSystem());
-
-
-            if (MainTabControl.SelectedTab == MainTabControl.TabPages["PerformancePage"])
-            {
-                PopMainList();
-                PopChart();
-            }
-
-            if (MainTabControl.SelectedTab == MainTabControl.TabPages["ProcessesPage"])
-            {
-                UpdateProcessList();
-            }
-  
-        }
-
-
-        private void timer2_Tick(object sender, EventArgs e)
-        {
-
-            using (Graphics Draw = CpuBar.CreateGraphics())
-            {
-                string CPU = "CPU " + Globals.CPU[Globals.CPU.Length - 1].ToString() + "%";
-                Draw.DrawString(CPU, new Font(FontFamily.GenericSansSerif, 12.0F, FontStyle.Regular, GraphicsUnit.Pixel, 128), Brushes.Black, (CpuBar.Width / 2 - CPU.Length * 2), (CpuBar.Height / 2 - 7));
-            }
-
-            using (Graphics Draw = RamBar.CreateGraphics())
-            {
-                string RAM = "RAM " + Globals.RAM[Globals.RAM.Length - 1].ToString() + "% " + Globals.FreePhysicalMemory + " / " + Globals.TotalVisibleMemorySize;
-                Draw.DrawString(RAM, new Font(FontFamily.GenericSansSerif, 12.0F, FontStyle.Regular, GraphicsUnit.Pixel, 128), Brushes.Black, (CpuBar.Width / 2 - RAM.Length * 2), (CpuBar.Height / 2 - 7));
-            }
-  
-        }
-
         private void killToolStripMenuItem_Click(object sender, EventArgs e)
         {
             
@@ -468,6 +426,44 @@ namespace TaskManager
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RefreshServiceList();
+        }
+
+        private void ProcessTimer_Tick(object sender, EventArgs e)
+        {
+            if (MainTabControl.SelectedTab == MainTabControl.TabPages["ProcessesPage"])
+            {
+                UpdateProcessList();
+            }
+        }
+
+        private void PerformanceTimer_Tick(object sender, EventArgs e)
+        {
+            Task.Factory.StartNew(() => Win32_Processor());
+            Task.Factory.StartNew(() => Win32_OperatingSystem());
+            Task.Factory.StartNew(() => Win32_ComputerSystem());
+
+            if (MainTabControl.SelectedTab == MainTabControl.TabPages["PerformancePage"])
+            {
+                PopMainList();
+                PopChart();
+            }
+        }
+
+        private void BarTimer_Tick(object sender, EventArgs e)
+        {
+            PopBars();
+
+            using (Graphics Draw = CpuBar.CreateGraphics())
+            {
+                string CPU = "CPU " + Globals.CPU[Globals.CPU.Length - 1].ToString() + "%";
+                Draw.DrawString(CPU, new Font(FontFamily.GenericSansSerif, 12.0F, FontStyle.Regular, GraphicsUnit.Pixel, 128), Brushes.Black, (CpuBar.Width / 2 - CPU.Length * 2), (CpuBar.Height / 2 - 7));
+            }
+
+            using (Graphics Draw = RamBar.CreateGraphics())
+            {
+                string RAM = "RAM " + Globals.RAM[Globals.RAM.Length - 1].ToString() + "% " + Globals.FreePhysicalMemory + " / " + Globals.TotalVisibleMemorySize;
+                Draw.DrawString(RAM, new Font(FontFamily.GenericSansSerif, 12.0F, FontStyle.Regular, GraphicsUnit.Pixel, 128), Brushes.Black, (CpuBar.Width / 2 - RAM.Length * 2), (CpuBar.Height / 2 - 7));
+            }
         }
     }
 }

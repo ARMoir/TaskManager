@@ -29,15 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            this.PullDataTimer = new System.Windows.Forms.Timer(this.components);
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.MainList = new System.Windows.Forms.ListBox();
             this.MainChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.CpuBar = new System.Windows.Forms.ProgressBar();
             this.RamBar = new System.Windows.Forms.ProgressBar();
-            this.RefreshTimer = new System.Windows.Forms.Timer(this.components);
             this.CPUcheck = new System.Windows.Forms.CheckBox();
             this.RAMcheck = new System.Windows.Forms.CheckBox();
             this.MainTabControl = new System.Windows.Forms.TabControl();
@@ -54,6 +52,9 @@
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ProcessTimer = new System.Windows.Forms.Timer(this.components);
+            this.PerformanceTimer = new System.Windows.Forms.Timer(this.components);
+            this.BarTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.MainChart)).BeginInit();
             this.MainTabControl.SuspendLayout();
             this.PerformancePage.SuspendLayout();
@@ -64,12 +65,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.ServiceGridView)).BeginInit();
             this.SerMenuStrip.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // PullDataTimer
-            // 
-            this.PullDataTimer.Enabled = true;
-            this.PullDataTimer.Interval = 1000;
-            this.PullDataTimer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // MainList
             // 
@@ -86,23 +81,24 @@
             this.MainChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea6.Name = "ChartArea1";
-            this.MainChart.ChartAreas.Add(chartArea6);
-            legend6.Name = "Legend1";
-            this.MainChart.Legends.Add(legend6);
+            chartArea2.Name = "ChartArea1";
+            this.MainChart.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.MainChart.Legends.Add(legend2);
             this.MainChart.Location = new System.Drawing.Point(6, 0);
             this.MainChart.Name = "MainChart";
-            series6.ChartArea = "ChartArea1";
-            series6.Legend = "Legend1";
-            series6.Name = "Series1";
-            this.MainChart.Series.Add(series6);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.MainChart.Series.Add(series2);
             this.MainChart.Size = new System.Drawing.Size(587, 319);
             this.MainChart.TabIndex = 2;
             this.MainChart.Text = "chart1";
             // 
             // CpuBar
             // 
-            this.CpuBar.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.CpuBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.CpuBar.Location = new System.Drawing.Point(12, 360);
             this.CpuBar.Name = "CpuBar";
             this.CpuBar.Size = new System.Drawing.Size(649, 23);
@@ -110,17 +106,12 @@
             // 
             // RamBar
             // 
-            this.RamBar.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.RamBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.RamBar.Location = new System.Drawing.Point(13, 390);
             this.RamBar.Name = "RamBar";
             this.RamBar.Size = new System.Drawing.Size(648, 23);
             this.RamBar.TabIndex = 4;
-            // 
-            // RefreshTimer
-            // 
-            this.RefreshTimer.Enabled = true;
-            this.RefreshTimer.Interval = 5;
-            this.RefreshTimer.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // CPUcheck
             // 
@@ -297,6 +288,24 @@
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
+            // ProcessTimer
+            // 
+            this.ProcessTimer.Enabled = true;
+            this.ProcessTimer.Interval = 5000;
+            this.ProcessTimer.Tick += new System.EventHandler(this.ProcessTimer_Tick);
+            // 
+            // PerformanceTimer
+            // 
+            this.PerformanceTimer.Enabled = true;
+            this.PerformanceTimer.Interval = 1000;
+            this.PerformanceTimer.Tick += new System.EventHandler(this.PerformanceTimer_Tick);
+            // 
+            // BarTimer
+            // 
+            this.BarTimer.Enabled = true;
+            this.BarTimer.Interval = 10;
+            this.BarTimer.Tick += new System.EventHandler(this.BarTimer_Tick);
+            // 
             // TaskManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -322,12 +331,10 @@
         }
 
         #endregion
-        private System.Windows.Forms.Timer PullDataTimer;
         private System.Windows.Forms.ListBox MainList;
         private System.Windows.Forms.DataVisualization.Charting.Chart MainChart;
         private System.Windows.Forms.ProgressBar CpuBar;
         private System.Windows.Forms.ProgressBar RamBar;
-        private System.Windows.Forms.Timer RefreshTimer;
         private System.Windows.Forms.CheckBox CPUcheck;
         private System.Windows.Forms.CheckBox RAMcheck;
         private System.Windows.Forms.TabControl MainTabControl;
@@ -344,6 +351,9 @@
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
+        private System.Windows.Forms.Timer ProcessTimer;
+        private System.Windows.Forms.Timer PerformanceTimer;
+        private System.Windows.Forms.Timer BarTimer;
     }
 }
 
