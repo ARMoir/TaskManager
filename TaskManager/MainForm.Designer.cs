@@ -332,7 +332,6 @@
 
         #endregion
         private System.Windows.Forms.ListBox MainList;
-        private System.Windows.Forms.DataVisualization.Charting.Chart MainChart;
         private System.Windows.Forms.ProgressBar CpuBar;
         private System.Windows.Forms.ProgressBar RamBar;
         private System.Windows.Forms.CheckBox CPUcheck;
@@ -340,13 +339,11 @@
         private System.Windows.Forms.TabControl MainTabControl;
         private System.Windows.Forms.TabPage PerformancePage;
         private System.Windows.Forms.TabPage ProcessesPage;
-        private System.Windows.Forms.DataGridView ProcessGridView;
         private System.Windows.Forms.ContextMenuStrip ProMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem killToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem locationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
         private System.Windows.Forms.TabPage Services;
-        private System.Windows.Forms.DataGridView ServiceGridView;
         private System.Windows.Forms.ContextMenuStrip SerMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
@@ -354,6 +351,9 @@
         private System.Windows.Forms.Timer ProcessTimer;
         private System.Windows.Forms.Timer PerformanceTimer;
         private System.Windows.Forms.Timer BarTimer;
+        public System.Windows.Forms.DataVisualization.Charting.Chart MainChart;
+        public System.Windows.Forms.DataGridView ProcessGridView;
+        public System.Windows.Forms.DataGridView ServiceGridView;
     }
 }
 

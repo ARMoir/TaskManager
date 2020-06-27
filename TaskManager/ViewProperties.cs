@@ -5,8 +5,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Properties
+namespace TaskManager.ViewProperties
 {
+    //https://www.daniweb.com/programming/software-development/threads/423946/file-properties-dialog
     class ViewProperties
     {
         [DllImport("shell32.dll", CharSet = CharSet.Auto)]

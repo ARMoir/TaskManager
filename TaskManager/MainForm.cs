@@ -22,12 +22,16 @@ namespace TaskManager
     {
         public TaskManager()
         {
+            
             InitializeComponent();
-            CreateProcessList();
-            RefreshProcessList();
-            UpdateProcessList();
-            CreateServiceList();
-            RefreshServiceList();
+            Processes.CreateProcessList();
+            ProcessGridView.DataSource = Globals.ProTable;
+            Processes.RefreshProcessList();
+            Processes.UpdateProcessList();
+            ProcessGridView.Update();
+            Service.CreateServiceList();
+            ServiceGridView.DataSource = Globals.SerTable;
+            Service.RefreshServiceList();
         }
 
         public static class Globals
@@ -56,67 +60,6 @@ namespace TaskManager
                 -45, -44, -43, -42, -41, -40, -39, -38, -37, -36, -35, -34, -33, -32, -31,
                 -30, -29, -28, -27, -26, -25, -24, -23, -22, -21, -20, -19, -18, -17, -16,
                 -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1};
-        }
-
-        public void Win32_Processor()
-        {
-
-            ObjectQuery wql = new ObjectQuery("SELECT * FROM Win32_Processor");
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(wql);
-            ManagementObjectCollection results = searcher.Get();
-
-            foreach (ManagementObject result in results)
-            {
-                Globals.Name = (result["Name"].ToString());
-                Globals.LoadPercentage = (Convert.ToInt32(result["LoadPercentage"]));
-                Globals.CurrentClockSpeed = (Convert.ToInt32(result["CurrentClockSpeed"]));
-                Globals.MaxClockSpeed = (Convert.ToInt32(result["MaxClockSpeed"]));
-                Globals.NumberOfCores = (Convert.ToInt32(result["NumberOfCores"]));
-                Globals.NumberOfLogicalProcessors = (Convert.ToInt32(result["NumberOfLogicalProcessors"]));
-                Globals.L2CacheSize = (Convert.ToInt32(result["L2CacheSize"]));
-            }
-
-            for (int i = 0; i < (Globals.CPU.Length - 1); i++)
-            {
-                Globals.CPU[i] = Globals.CPU[i + 1];
-            }
-            Globals.CPU[Globals.CPU.Length -1] = Globals.LoadPercentage;
-        }
-
-        public void Win32_OperatingSystem()
-        {
-            ObjectQuery wql = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(wql);
-            ManagementObjectCollection results = searcher.Get();
-
-            foreach (ManagementObject result in results)
-            {
-                Globals.TotalVisibleMemorySize = (Convert.ToInt32(result["TotalVisibleMemorySize"]));
-                Globals.FreePhysicalMemory = (Convert.ToInt32(result["FreePhysicalMemory"]));
-                Globals.TotalVirtualMemorySize = (Convert.ToInt32(result["TotalVirtualMemorySize"]));
-                Globals.FreeVirtualMemory = (Convert.ToInt32(result["FreeVirtualMemory"]));
-            }
-
-            float RAMPercentageFloat = ((Globals.FreePhysicalMemory - Globals.TotalVisibleMemorySize) * 100) / Globals.TotalVisibleMemorySize;
-            int RAMPercentage = Math.Abs(Convert.ToInt32(RAMPercentageFloat));
-
-            for (int i = 0; i < (Globals.RAM.Length - 1); i++)
-            {
-                Globals.RAM[i] = Globals.RAM[i + 1];
-            }
-            Globals.RAM[Globals.RAM.Length -1] = RAMPercentage;
-        }
-
-        public void Win32_ComputerSystem()
-        {
-            ObjectQuery wql = new ObjectQuery("SELECT * FROM Win32_ComputerSystem");
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(wql);
-            ManagementObjectCollection results = searcher.Get();
-
-            foreach (ManagementObject result in results)
-            {
-                Globals.NumberOfProcessors = (Convert.ToInt32(result["NumberOfProcessors"]));
-            }
         }
 
         public void PopMainList()
@@ -212,121 +155,7 @@ namespace TaskManager
             MainChart.Legends["Legend1"].Enabled = false;
         }
 
-        public void CreateProcessList()
-        {
-            Globals.ProTable.Clear();
-            Globals.ProTable.Columns.Add("Icon", typeof(Bitmap));
-            Globals.ProTable.Columns.Add("id");
-            Globals.ProTable.Columns.Add("ProcessName");
-            Globals.ProTable.Columns.Add("MainWindowTitle");
-            Globals.ProTable.Columns.Add("Responding");
-            Globals.ProTable.Columns.Add("UserProcessorTime");
-            Globals.ProTable.Columns.Add("PrivateMemorySize64");
-            ProcessGridView.DataSource = Globals.ProTable;
-        }
 
-        public void RefreshProcessList()
-        {
-            Globals.ProTable.Clear();
-
-            Process[] ProcessListArray = Process.GetProcesses();
-            foreach (Process Pro in ProcessListArray)
-            {
-                try
-                {
-                    Globals.ProID = (Int32.Parse(Pro.Id.ToString()));
-                    GetIcon();
-
-                    Globals.ProTable.Rows.Add(Globals.Icon, Pro.Id, Pro.ProcessName, Pro.MainWindowTitle,
-                    Pro.Responding, Pro.UserProcessorTime, Pro.PrivateMemorySize64);
-                }
-                catch (Exception ex)
-                {
-                    //MessageBox.Show(ex.Message.ToString());
-                }
-            }
-        }
-
-        public void CreateServiceList()
-        {
-            Globals.SerTable.Clear();
-            Globals.SerTable.Columns.Add("Service Name");
-            Globals.SerTable.Columns.Add("Display Name");
-            Globals.SerTable.Columns.Add("Status");
-            Globals.SerTable.Columns.Add("Service Type");
-            Globals.SerTable.Columns.Add("Start Type");
-            ServiceGridView.DataSource = Globals.SerTable;
-        }
-
-        public void RefreshServiceList()
-        {
-            Globals.SerTable.Clear();
-
-            ServiceController[] services = ServiceController.GetServices();
-            foreach (ServiceController service in services)
-            {
-                try
-                {
-
-                    Globals.SerTable.Rows.Add(service.ServiceName, service.DisplayName, service.Status,
-                        service.ServiceType, service.StartType);
-
-                }
-                catch (Exception ex)
-                {
-                    //MessageBox.Show(ex.Message.ToString());
-                }
-            }
-        }
-
-        public bool ThumbnailCallback() { return false; }
-
-        public void GetIcon()
-        {
-            try
-            {
-                Process proc = Process.GetProcessById(Globals.ProID);
-                string fullPath = proc.MainModule.FileName;
-                Bitmap Icon = (System.Drawing.Icon.ExtractAssociatedIcon(fullPath)).ToBitmap();
-                int thumbSize = 20;
-                Globals.Icon = new Bitmap(Icon.GetThumbnailImage(thumbSize, thumbSize, ThumbnailCallback, IntPtr.Zero));
-                Icon.Dispose();
-            }
-            catch (Exception ex)
-            {
-                //MessageBox.Show(ex.Message.ToString());
-            }
-        }
-
-        public void UpdateProcessList()
-        {
-
-            Process[] ProcessListArray = Process.GetProcesses();
-            foreach (Process Pro in ProcessListArray)
-            {
-                try
-                {
-                    foreach (DataRow row in Globals.ProTable.Rows)
-                    {
-                        if (row["id"].ToString() == Pro.Id.ToString())
-                        {
-                            row.SetField("ProcessName", Pro.ProcessName);
-                            row.SetField("MainWindowTitle", Pro.MainWindowTitle);
-                            row.SetField("Responding", Pro.Responding);
-                            row.SetField("UserProcessorTime", Pro.UserProcessorTime);
-                            row.SetField("PrivateMemorySize64", Pro.PrivateMemorySize64);
-                        } 
-                    }
-                }
-                catch (Exception ex)
-                {
-                    //MessageBox.Show(ex.Message.ToString());
-                }
-                
-            }
-
-            ProcessGridView.Update();
-        }
 
         private void killToolStripMenuItem_Click(object sender, EventArgs e)
         {           
@@ -334,11 +163,11 @@ namespace TaskManager
             {
                 Process proc = Process.GetProcessById(Int32.Parse(ProcessGridView.CurrentRow.Cells[1].Value.ToString()));
                 proc.Kill();
-                RefreshProcessList();
+                Processes.RefreshProcessList();
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message.ToString());
+                MessageBox.Show(ex.Message.ToString());
             }
         }
 
@@ -349,7 +178,7 @@ namespace TaskManager
                 Process proc = Process.GetProcessById(Int32.Parse(ProcessGridView.CurrentRow.Cells[1].Value.ToString()));
                 string fullPath = proc.MainModule.FileName;
                 Process.Start("explorer.exe", "/select, " + fullPath);
-                RefreshProcessList();
+                Processes.RefreshProcessList();
             }
             catch (Exception ex)
             {
@@ -363,7 +192,7 @@ namespace TaskManager
             {
                 Process proc = Process.GetProcessById(Int32.Parse(ProcessGridView.CurrentRow.Cells[1].Value.ToString()));
                 string fullPath = proc.MainModule.FileName;
-                Properties.ViewProperties.ShowFileProperties(fullPath);
+                ViewProperties.ViewProperties.ShowFileProperties(fullPath);
             }
             catch (Exception ex)
             {
@@ -377,7 +206,7 @@ namespace TaskManager
             {
                 ServiceController service = new ServiceController(ServiceGridView.CurrentRow.Cells[0].Value.ToString());
                 service.Stop();
-                RefreshServiceList();
+                Service.RefreshServiceList();
             }
             catch (Exception ex)
             {
@@ -391,7 +220,7 @@ namespace TaskManager
             {
                 ServiceController service = new ServiceController(ServiceGridView.CurrentRow.Cells[0].Value.ToString());
                 service.Start();
-                RefreshServiceList();
+                Service.RefreshServiceList();
             }
             catch (Exception ex)
             {
@@ -401,22 +230,23 @@ namespace TaskManager
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RefreshServiceList();
+            Service.RefreshServiceList();
         }
 
         private void ProcessTimer_Tick(object sender, EventArgs e)
         {
             if (MainTabControl.SelectedTab == MainTabControl.TabPages["ProcessesPage"])
             {
-                UpdateProcessList();
+                Processes.UpdateProcessList();
+                ProcessGridView.Update();
             }
         }
 
         private void PerformanceTimer_Tick(object sender, EventArgs e)
         {
-            Task.Factory.StartNew(() => Win32_Processor());
-            Task.Factory.StartNew(() => Win32_OperatingSystem());
-            Task.Factory.StartNew(() => Win32_ComputerSystem());
+            Task.Factory.StartNew(() => Win32.Win32_Processor());
+            Task.Factory.StartNew(() => Win32.Win32_OperatingSystem());
+            Task.Factory.StartNew(() => Win32.Win32_ComputerSystem());
 
             if (MainTabControl.SelectedTab == MainTabControl.TabPages["PerformancePage"])
             {
