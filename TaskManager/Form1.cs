@@ -32,40 +32,26 @@ namespace TaskManager
 
         public static class Globals
         {
+            public static string Name { get; set; } = "";
+            public static int LoadPercentage { get; set; } = 0;
+            public static int CurrentClockSpeed { get; set; } = 0;
+            public static int MaxClockSpeed { get; set; } = 0;
+            public static int NumberOfCores { get; set; } = 0;
+            public static int NumberOfLogicalProcessors { get; set; } = 0;
+            public static int L2CacheSize { get; set; } = 0;
+            public static int FreePhysicalMemory { get; set; } = 0;
+            public static int TotalVisibleMemorySize { get; set; } = 0;
+            public static int TotalVirtualMemorySize { get; set; } = 0;
+            public static int FreeVirtualMemory { get; set; } = 0;
+            public static int NumberOfProcessors { get; set; } = 0;
+            public static int ProID { get; set; } = 0;
+            public static DataTable ProTable { get; set; } = new DataTable();
+            public static DataTable SerTable { get; set; } = new DataTable();
+            public static Bitmap Icon { get; set; } = new Bitmap(1,1);
+            public static int[] CPU { get; set; } = Enumerable.Repeat(0, 60).ToArray(); 
+            public static int[] RAM { get; set; } = Enumerable.Repeat(0, 60).ToArray();
 
-            public static string Name = "";
-            public static int LoadPercentage = 0;
-            public static int CurrentClockSpeed = 0;
-            public static int MaxClockSpeed = 0;
-            public static int NumberOfCores = 0;
-            public static int NumberOfLogicalProcessors = 0;
-            public static int L2CacheSize = 0;
-
-            public static int FreePhysicalMemory = 0;
-            public static int TotalVisibleMemorySize = 0;
-            public static int TotalVirtualMemorySize = 0;
-            public static int FreeVirtualMemory = 0;
-
-            public static int NumberOfProcessors = 0;
-
-            public static DataTable ProTable = new DataTable();
-            public static DataTable SerTable = new DataTable();
-            public static Bitmap Icon;
-            public static int ProID = 0;
-
-            public static int[] CPU = { 
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-            public static int[] RAM = {
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-            public static int[] Time = {
+            public static int[] Time { get; set; } = {
                 -60, -59, -58, -57, -56, -55, -54, -53, -52, -51, -50, -49, -48, -47, -46,
                 -45, -44, -43, -42, -41, -40, -39, -38, -37, -36, -35, -34, -33, -32, -31,
                 -30, -29, -28, -27, -26, -25, -24, -23, -22, -21, -20, -19, -18, -17, -16,
@@ -95,13 +81,10 @@ namespace TaskManager
                 Globals.CPU[i] = Globals.CPU[i + 1];
             }
             Globals.CPU[Globals.CPU.Length -1] = Globals.LoadPercentage;
-
-
         }
 
         public void Win32_OperatingSystem()
         {
-
             ObjectQuery wql = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(wql);
             ManagementObjectCollection results = searcher.Get();
@@ -122,12 +105,10 @@ namespace TaskManager
                 Globals.RAM[i] = Globals.RAM[i + 1];
             }
             Globals.RAM[Globals.RAM.Length -1] = RAMPercentage;
-
         }
 
         public void Win32_ComputerSystem()
         {
-
             ObjectQuery wql = new ObjectQuery("SELECT * FROM Win32_ComputerSystem");
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(wql);
             ManagementObjectCollection results = searcher.Get();
@@ -216,13 +197,13 @@ namespace TaskManager
 
             MainChart.Series.Clear();
 
-            if (RAMcheck.Checked == true)
+            if (RAMcheck.Checked)
             {
                 MainChart.Series.Add(RAMseriesArea);
                 MainChart.Series.Add(RAMseriesLine);
             }
 
-            if (CPUcheck.Checked == true)
+            if (CPUcheck.Checked)
             {
                 MainChart.Series.Add(CPUseriesArea);
                 MainChart.Series.Add(CPUseriesLine);
@@ -253,20 +234,17 @@ namespace TaskManager
             {
                 try
                 {
-
                     Globals.ProID = (Int32.Parse(Pro.Id.ToString()));
                     GetIcon();
 
                     Globals.ProTable.Rows.Add(Globals.Icon, Pro.Id, Pro.ProcessName, Pro.MainWindowTitle,
                     Pro.Responding, Pro.UserProcessorTime, Pro.PrivateMemorySize64);
-
                 }
                 catch (Exception ex)
                 {
                     //MessageBox.Show(ex.Message.ToString());
                 }
             }
-
         }
 
         public void CreateServiceList()
@@ -299,7 +277,6 @@ namespace TaskManager
                     //MessageBox.Show(ex.Message.ToString());
                 }
             }
-
         }
 
         public bool ThumbnailCallback() { return false; }
@@ -352,8 +329,7 @@ namespace TaskManager
         }
 
         private void killToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
+        {           
             try
             {
                 Process proc = Process.GetProcessById(Int32.Parse(ProcessGridView.CurrentRow.Cells[1].Value.ToString()));
