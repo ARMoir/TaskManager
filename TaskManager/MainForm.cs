@@ -49,6 +49,10 @@ namespace TaskManager
             public static int FreeVirtualMemory { get; set; } = 0;
             public static int NumberOfProcessors { get; set; } = 0;
             public static int ProID { get; set; } = 0;
+            public static Series CPUseriesArea { get; set; } = new Series("CPUArea");
+            public static Series CPUseriesLine { get; set; } = new Series("CPULine");
+            public static Series RAMseriesLine { get; set; } = new Series("RAMLine");
+            public static Series RAMseriesArea { get; set; } = new Series("RAMArea");
             public static DataTable ProTable { get; set; } = new DataTable();
             public static DataTable SerTable { get; set; } = new DataTable();
             public static Bitmap Icon { get; set; } = new Bitmap(1,1);
@@ -96,60 +100,32 @@ namespace TaskManager
             MainChart.ChartAreas[0].AxisY.Maximum = 100;
             MainChart.ChartAreas[0].AxisY.Minimum = 0;
 
-            var CPUseriesArea = new Series("CPUArea");
-            CPUseriesArea.ChartType = SeriesChartType.Area;
+            Performance.CPUChart();
 
             if (Globals.CPU[Globals.CPU.Length - 1] > 80)
             {
-                CPUseriesArea.Color = Color.FromArgb(128, Color.PaleVioletRed);  
-            }
-            else
-            {
-                CPUseriesArea.Color = Color.FromArgb(128, 230, 230, 250);
-            }
-
-            CPUseriesArea.Points.DataBindXY(Globals.Time, Globals.CPU);
-
-            var CPUseriesLine = new Series("CPULine");
-            CPUseriesLine.ChartType = SeriesChartType.Line;
-
-            if (Globals.CPU[Globals.CPU.Length - 1] > 80)
-            {
-                CPUseriesLine.Color = Color.Red;
                 CPUcheck.ForeColor = Color.Red;
             }
             else
             {
-                CPUseriesLine.Color = Color.FromArgb(255, 65, 105, 225);
                 CPUcheck.ForeColor = Color.FromArgb(255, 65, 105, 225);
             }
 
-            CPUseriesLine.Points.DataBindXY(Globals.Time, Globals.CPU);
-
-            var RAMseriesLine = new Series("RAMLine");
-            RAMseriesLine.ChartType = SeriesChartType.Line;
-            RAMseriesLine.Color = Color.Purple;
-            RAMseriesLine.Points.DataBindXY(Globals.Time, Globals.RAM);
-
-            var RAMseriesArea = new Series("RAMArea");
-            RAMseriesArea.ChartType = SeriesChartType.Area;
-            RAMseriesArea.Color = Color.FromArgb(128, Color.Violet);
-            RAMseriesArea.Points.DataBindXY(Globals.Time, Globals.RAM);
-
+            Performance.RamChart();
             RAMcheck.ForeColor = Color.Purple;
 
             MainChart.Series.Clear();
 
             if (RAMcheck.Checked)
             {
-                MainChart.Series.Add(RAMseriesArea);
-                MainChart.Series.Add(RAMseriesLine);
+                MainChart.Series.Add(Globals.RAMseriesArea);
+                MainChart.Series.Add(Globals.RAMseriesLine);
             }
 
             if (CPUcheck.Checked)
             {
-                MainChart.Series.Add(CPUseriesArea);
-                MainChart.Series.Add(CPUseriesLine);
+                MainChart.Series.Add(Globals.CPUseriesArea);
+                MainChart.Series.Add(Globals.CPUseriesLine);
             }
 
             MainChart.Legends["Legend1"].Enabled = false;
