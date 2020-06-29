@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static TaskManager.TaskManager;
 
 namespace TaskManager
 {
@@ -13,30 +14,30 @@ namespace TaskManager
     {
         public static void CreateProcessList()
         {
-            TaskManager.Globals.ProTable.Clear();
-            TaskManager.Globals.ProTable.Columns.Add("Icon", typeof(Bitmap));
-            TaskManager.Globals.ProTable.Columns.Add("id");
-            TaskManager.Globals.ProTable.Columns.Add("ProcessName");
-            TaskManager.Globals.ProTable.Columns.Add("MainWindowTitle");
-            TaskManager.Globals.ProTable.Columns.Add("Responding");
-            TaskManager.Globals.ProTable.Columns.Add("UserProcessorTime");
-            TaskManager.Globals.ProTable.Columns.Add("PrivateMemorySize64");
+            Globals.ProTable.Clear();
+            Globals.ProTable.Columns.Add("Icon", typeof(Bitmap));
+            Globals.ProTable.Columns.Add("id");
+            Globals.ProTable.Columns.Add("ProcessName");
+            Globals.ProTable.Columns.Add("MainWindowTitle");
+            Globals.ProTable.Columns.Add("Responding");
+            Globals.ProTable.Columns.Add("UserProcessorTime");
+            Globals.ProTable.Columns.Add("PrivateMemorySize64");
             
         }
 
         public static void RefreshProcessList()
         {
-            TaskManager.Globals.ProTable.Clear();
+            Globals.ProTable.Clear();
 
             Process[] ProcessListArray = Process.GetProcesses();
             foreach (Process Pro in ProcessListArray)
             {
                 try
                 {
-                    TaskManager.Globals.ProID = (Int32.Parse(Pro.Id.ToString()));
+                    Globals.ProID = (Int32.Parse(Pro.Id.ToString()));
                     GetIcon();
 
-                    TaskManager.Globals.ProTable.Rows.Add(TaskManager.Globals.Icon, Pro.Id, Pro.ProcessName, Pro.MainWindowTitle,
+                    Globals.ProTable.Rows.Add(Globals.Icon, Pro.Id, Pro.ProcessName, Pro.MainWindowTitle,
                     Pro.Responding, Pro.UserProcessorTime, Pro.PrivateMemorySize64);
                 }
                 catch (Exception ex)
@@ -52,11 +53,11 @@ namespace TaskManager
         {
             try
             {
-                Process proc = Process.GetProcessById(TaskManager.Globals.ProID);
+                Process proc = Process.GetProcessById(Globals.ProID);
                 string fullPath = proc.MainModule.FileName;
                 Bitmap Icon = (System.Drawing.Icon.ExtractAssociatedIcon(fullPath)).ToBitmap();
                 int thumbSize = 20;
-                TaskManager.Globals.Icon = new Bitmap(Icon.GetThumbnailImage(thumbSize, thumbSize, ThumbnailCallback, IntPtr.Zero));
+                Globals.Icon = new Bitmap(Icon.GetThumbnailImage(thumbSize, thumbSize, ThumbnailCallback, IntPtr.Zero));
                 Icon.Dispose();
             }
             catch (Exception ex)
@@ -73,7 +74,7 @@ namespace TaskManager
             {
                 try
                 {
-                    foreach (DataRow row in TaskManager.Globals.ProTable.Rows)
+                    foreach (DataRow row in Globals.ProTable.Rows)
                     {
                         if (row["id"].ToString() == Pro.Id.ToString())
                         {

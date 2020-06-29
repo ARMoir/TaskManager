@@ -4,6 +4,7 @@ using System.Linq;
 using System.Management;
 using System.Text;
 using System.Threading.Tasks;
+using static TaskManager.TaskManager;
 
 namespace TaskManager
 {
@@ -18,20 +19,20 @@ namespace TaskManager
 
             foreach (ManagementObject result in results)
             {
-                TaskManager.Globals.Name = (result["Name"].ToString());
-                TaskManager.Globals.LoadPercentage = (Convert.ToInt32(result["LoadPercentage"]));
-                TaskManager.Globals.CurrentClockSpeed = (Convert.ToInt32(result["CurrentClockSpeed"]));
-                TaskManager.Globals.MaxClockSpeed = (Convert.ToInt32(result["MaxClockSpeed"]));
-                TaskManager.Globals.NumberOfCores = (Convert.ToInt32(result["NumberOfCores"]));
-                TaskManager.Globals.NumberOfLogicalProcessors = (Convert.ToInt32(result["NumberOfLogicalProcessors"]));
-                TaskManager.Globals.L2CacheSize = (Convert.ToInt32(result["L2CacheSize"]));
+                Globals.Name = (result["Name"].ToString());
+                Globals.LoadPercentage = (Convert.ToInt32(result["LoadPercentage"]));
+                Globals.CurrentClockSpeed = (Convert.ToInt32(result["CurrentClockSpeed"]));
+                Globals.MaxClockSpeed = (Convert.ToInt32(result["MaxClockSpeed"]));
+                Globals.NumberOfCores = (Convert.ToInt32(result["NumberOfCores"]));
+                Globals.NumberOfLogicalProcessors = (Convert.ToInt32(result["NumberOfLogicalProcessors"]));
+                Globals.L2CacheSize = (Convert.ToInt32(result["L2CacheSize"]));
             }
 
-            for (int i = 0; i < (TaskManager.Globals.CPU.Length - 1); i++)
+            for (int i = 0; i < (Globals.CPU.Length - 1); i++)
             {
-                TaskManager.Globals.CPU[i] = TaskManager.Globals.CPU[i + 1];
+                Globals.CPU[i] = Globals.CPU[i + 1];
             }
-            TaskManager.Globals.CPU[TaskManager.Globals.CPU.Length - 1] = TaskManager.Globals.LoadPercentage;
+            Globals.CPU[Globals.CPU.Length - 1] = Globals.LoadPercentage;
         }
 
         public static void Win32_OperatingSystem()
@@ -42,20 +43,20 @@ namespace TaskManager
 
             foreach (ManagementObject result in results)
             {
-                TaskManager.Globals.TotalVisibleMemorySize = (Convert.ToInt32(result["TotalVisibleMemorySize"]));
-                TaskManager.Globals.FreePhysicalMemory = (Convert.ToInt32(result["FreePhysicalMemory"]));
-                TaskManager.Globals.TotalVirtualMemorySize = (Convert.ToInt32(result["TotalVirtualMemorySize"]));
-                TaskManager.Globals.FreeVirtualMemory = (Convert.ToInt32(result["FreeVirtualMemory"]));
+                Globals.TotalVisibleMemorySize = (Convert.ToInt32(result["TotalVisibleMemorySize"]));
+                Globals.FreePhysicalMemory = (Convert.ToInt32(result["FreePhysicalMemory"]));
+                Globals.TotalVirtualMemorySize = (Convert.ToInt32(result["TotalVirtualMemorySize"]));
+                Globals.FreeVirtualMemory = (Convert.ToInt32(result["FreeVirtualMemory"]));
             }
 
-            float RAMPercentageFloat = ((TaskManager.Globals.FreePhysicalMemory - TaskManager.Globals.TotalVisibleMemorySize) * 100) / TaskManager.Globals.TotalVisibleMemorySize;
+            float RAMPercentageFloat = ((Globals.FreePhysicalMemory - Globals.TotalVisibleMemorySize) * 100) / Globals.TotalVisibleMemorySize;
             int RAMPercentage = Math.Abs(Convert.ToInt32(RAMPercentageFloat));
 
-            for (int i = 0; i < (TaskManager.Globals.RAM.Length - 1); i++)
+            for (int i = 0; i < (Globals.RAM.Length - 1); i++)
             {
-                TaskManager.Globals.RAM[i] = TaskManager.Globals.RAM[i + 1];
+                Globals.RAM[i] = Globals.RAM[i + 1];
             }
-            TaskManager.Globals.RAM[TaskManager.Globals.RAM.Length - 1] = RAMPercentage;
+            Globals.RAM[Globals.RAM.Length - 1] = RAMPercentage;
         }
 
         public static void Win32_ComputerSystem()
@@ -66,7 +67,7 @@ namespace TaskManager
 
             foreach (ManagementObject result in results)
             {
-                TaskManager.Globals.NumberOfProcessors = (Convert.ToInt32(result["NumberOfProcessors"]));
+                Globals.NumberOfProcessors = (Convert.ToInt32(result["NumberOfProcessors"]));
             }
         }
     }
