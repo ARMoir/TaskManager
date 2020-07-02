@@ -40,9 +40,8 @@ namespace TaskManager
                     Globals.ProTable.Rows.Add(Globals.Icon, Pro.Id, Pro.ProcessName, Pro.MainWindowTitle,
                     Pro.Responding, Pro.UserProcessorTime, Pro.PrivateMemorySize64);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    //MessageBox.Show(ex.Message.ToString());
                 }
             }
         }
@@ -60,9 +59,8 @@ namespace TaskManager
                 Globals.Icon = new Bitmap(Icon.GetThumbnailImage(thumbSize, thumbSize, ThumbnailCallback, IntPtr.Zero));
                 Icon.Dispose();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                //MessageBox.Show(ex.Message.ToString());
             }
         }
 
@@ -86,9 +84,8 @@ namespace TaskManager
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    //MessageBox.Show(ex.Message.ToString());
                 }
             }
         }

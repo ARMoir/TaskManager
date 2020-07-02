@@ -35,9 +35,8 @@ namespace TaskManager
                         service.ServiceType, service.StartType);
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    //MessageBox.Show(ex.Message.ToString());
                 }
             }
         }

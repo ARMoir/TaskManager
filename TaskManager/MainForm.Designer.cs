@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.MainList = new System.Windows.Forms.ListBox();
             this.MainChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.CpuBar = new System.Windows.Forms.ProgressBar();
@@ -81,16 +81,16 @@
             this.MainChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea2.Name = "ChartArea1";
-            this.MainChart.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.MainChart.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            this.MainChart.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.MainChart.Legends.Add(legend1);
             this.MainChart.Location = new System.Drawing.Point(6, 0);
             this.MainChart.Name = "MainChart";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.MainChart.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.MainChart.Series.Add(series1);
             this.MainChart.Size = new System.Drawing.Size(587, 319);
             this.MainChart.TabIndex = 2;
             this.MainChart.Text = "chart1";
@@ -101,7 +101,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CpuBar.Location = new System.Drawing.Point(12, 360);
             this.CpuBar.Name = "CpuBar";
-            this.CpuBar.Size = new System.Drawing.Size(649, 23);
+            this.CpuBar.Size = new System.Drawing.Size(913, 23);
             this.CpuBar.TabIndex = 3;
             // 
             // RamBar
@@ -110,7 +110,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.RamBar.Location = new System.Drawing.Point(13, 390);
             this.RamBar.Name = "RamBar";
-            this.RamBar.Size = new System.Drawing.Size(648, 23);
+            this.RamBar.Size = new System.Drawing.Size(912, 23);
             this.RamBar.TabIndex = 4;
             // 
             // CPUcheck
